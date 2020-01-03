@@ -1,0 +1,58 @@
+<h1 class="table-heading">Employees</h1>
+<div class="row mb-3">
+    <div class="col-md-8">
+      <a class="btn custom-btn" routerLink="/employee/new"><i class="fa fa-plus" aria-hidden="true"></i> Add new employee </a>
+    </div>
+    <div class="col-md-4">
+      <div class="input-group">
+        <input type="text" name="search" class="form-control"
+        (debouncedChange)="getAll()"
+        [debounceTime]="1000"
+        debouncedInput
+        placeholder="Search by name, designation or salary" 
+        [(ngModel)]="searchText">
+        <div class="input-group-btn border">
+          <button class="btn btn-default">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+</div>
+<table class="table table-hover table-bordered" *ngIf="employees">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Designation</th>
+      <th scope="col">Salary</th>
+      <th class="text-center td-action">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let employee of employees; let index=i">
+      <td>{{ employee.name }}</td>
+      <td>{{ employee.designation }}</td>
+      <td>{{ employee.salary }}</td>
+      <td class="text-center td-action">
+        <div class="btn-group">
+          <button class="btn" [routerLink]="['/employee/', employee.name]">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+          <button class="btn" (click)="openDeleteModal(template,employee)">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #template>
+  <div class="modal-body">
+    <p>Are you sure you want to delete {{ selectedEmployee.name }} ?</p>
+    <div class="text-right">
+      <button type="button" class="btn btn-primary" (click)="deleteEmployee()" >Delete</button>
+      <button type="button" class="btn btn-default" (click)="modalRef.hide()" >Cancel</button>
+    </div>
+  </div>
+</ng-template>
